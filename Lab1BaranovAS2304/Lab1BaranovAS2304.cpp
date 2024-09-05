@@ -19,10 +19,20 @@ struct compressor_station
 
 int main(){
     setlocale(LC_ALL, "RU");
-    int x = 0;
+    int x = -1;
+    std::cout << "Меню" << std::endl;
+    std::cout << "1) Добавить трубу" << std::endl;
+    std::cout << "2) Добавить КС" << std::endl;
+    std::cout << "3) Просмотр всех объектов" << std::endl;
+    std::cout << "4) Редактировать трубу" << std::endl;
+    std::cout << "5) Редактировать КС" << std::endl;
+    std::cout << "6) Сохранить" << std::endl;
+    std::cout << "7) Загрузить" << std::endl;
+    std::cout << "0) Выход" << std::endl;
+    std::cout << "Введите число: ";
     do {
-        std::cout << "Меню"<<std::endl;
-    } while (x != 1);
+        std::cin >> x;
+    } while (x == 0, std::cout << x);
     /*Pipe_settings Pipe;
     std::cout << "Введите название трубы (на английском язык): ";
     getline(std::cin, Pipe.Name);
