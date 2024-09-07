@@ -31,6 +31,13 @@ void menu() {
     std::cout << "0) Выход" << std::endl;
     std::cout << "Введите число: ";
     (std::cin >> k).get();
+    while (std::cin.fail() == 1)
+    {
+        std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+        std::cin.clear();
+        while (std::cin.get() != '\n');
+        menu();
+    }
 }
 void menu_new_pipe() {
     Pipe_settings Pipe;
@@ -38,13 +45,39 @@ void menu_new_pipe() {
     getline(std::cin, Pipe.Name);
     std::cout << "Введите длину трубы в километрах: ";
     (std::cin >> Pipe.length).get();
+    while (std::cin.fail() == 1)
+    {
+        std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+        std::cin.clear();
+        while (std::cin.get() != '\n');
+        std::cout << "Введите длину трубы в километрах: ";
+        (std::cin >> Pipe.length).get();
+    }
     std::cout << "Введите диаметр трубы в миллиметрах: ";
     (std::cin >> Pipe.diameter).get();
+    while (std::cin.fail() == 1)
+    {
+        std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+        std::cin.clear();
+        while (std::cin.get() != '\n');
+        std::cout << "Введите диаметр трубы в миллиметрах: ";
+        (std::cin >> Pipe.diameter).get();
+    }
     std::cout << "Выберите в каком состоянии труба: " << std::endl;
     std::cout << "1)В ремонте" << std::endl;
     std::cout << "2)Не в ремонте" << std::endl;
     int n = 0;
     (std::cin >> n).get();
+    while (std::cin.fail() == 1)
+    {
+        std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+        std::cin.clear();
+        while (std::cin.get() != '\n');
+        std::cout << "Выберите в каком состоянии труба: " << std::endl;
+        std::cout << "1)В ремонте" << std::endl;
+        std::cout << "2)Не в ремонте" << std::endl;
+        (std::cin >> n).get();
+    }
     while (n != 1 && n != 2) {
         std::cout << "Выберите число 1 или 2: ";
         (std::cin >> n).get();
