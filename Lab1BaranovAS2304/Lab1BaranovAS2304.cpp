@@ -30,16 +30,7 @@ struct compressor_station
 };
 //Функции
 void menu() {
-    std::cout << "Меню" << std::endl;
-    std::cout << "1) Добавить трубу" << std::endl;
-    std::cout << "2) Добавить КС" << std::endl;
-    std::cout << "3) Просмотр всех объектов" << std::endl;
-    std::cout << "4) Редактировать трубу" << std::endl;
-    std::cout << "5) Редактировать КС" << std::endl;
-    std::cout << "6) Сохранить" << std::endl;
-    std::cout << "7) Загрузить" << std::endl;
-    std::cout << "0) Выход" << std::endl;
-    std::cout << "Введите комманду которую вы бы хотели выполнить(от 0 до 9): ";
+    std::cout << "Меню" << std::endl << "1) Добавить трубу" << std::endl << "2) Добавить КС" << std::endl << "3) Просмотр всех объектов" << std::endl << "4) Редактировать трубу" << std::endl << "5) Редактировать КС" << std::endl << "6) Сохранить" << std::endl << "7) Загрузить" << std::endl << "0) Выход" << std::endl << "Введите комманду которую вы бы хотели выполнить(от 0 до 9): ";
     (std::cin >> k).get();
     while (std::cin.fail() == 1)
     {
@@ -73,34 +64,25 @@ void menu_new_pipe() {
         std::cout << "Введите диаметр трубы в миллиметрах: ";
         (std::cin >> Pipe.diameter).get();
     }
-    std::cout << "Выберите в каком состоянии труба: " << std::endl;
-    std::cout << "1)В ремонте" << std::endl;
-    std::cout << "2)Не в ремонте" << std::endl;
+    std::cout << "Выберите в каком состоянии труба: " << std::endl << "1)В ремонте" << std::endl << "2)Не в ремонте" << std::endl;
     (std::cin >> n).get();
     while (std::cin.fail() == 1)
     {
         std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
         std::cin.clear();
         while (std::cin.get() != '\n');
-        std::cout << "Выберите в каком состоянии труба: " << std::endl;
-        std::cout << "1)В ремонте" << std::endl;
-        std::cout << "2)Не в ремонте" << std::endl;
+        std::cout << "Выберите в каком состоянии труба: " << std::endl << "1)В ремонте" << std::endl << "2)Не в ремонте" << std::endl;
         (std::cin >> n).get();
     }
     while (n != 1 && n != 2) {
-        std::cout << "Ошибка. Выбрана невреная команда!" << std::endl;
-        std::cout << "Выберите в каком состоянии труба: " << std::endl;
-        std::cout << "1)В ремонте" << std::endl;
-        std::cout << "2)Не в ремонте" << std::endl;
+        std::cout << "Ошибка. Выбрана невреная команда!" << std::endl << "Выберите в каком состоянии труба: " << std::endl << "1)В ремонте" << std::endl << "2)Не в ремонте" << std::endl;
         (std::cin >> n).get();
         while (std::cin.fail() == 1)
         {
             std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
             std::cin.clear();
             while (std::cin.get() != '\n');
-            std::cout << "Выберите в каком состоянии труба: " << std::endl;
-            std::cout << "1)В ремонте" << std::endl;
-            std::cout << "2)Не в ремонте" << std::endl;
+            std::cout << "Выберите в каком состоянии труба: " << std::endl << "1)В ремонте" << std::endl << "2)Не в ремонте" << std::endl;
             (std::cin >> n).get();
         }
     };
@@ -148,8 +130,7 @@ void menu_new_ks() {
         (std::cin >> CS.workshopsinwork).get();
     }
     while (CS.workshopsinwork > CS.workshops) {
-        std::cout << "Ошибка. Введено кол-во цехов в работе больше чем самих цехов!" << std::endl;
-        std::cout << "Введите кол-во цехов в работе: ";
+        std::cout << "Ошибка. Введено кол-во цехов в работе больше чем самих цехов!" << std::endl << "Введите кол-во цехов в работе: ";
         (std::cin >> CS.workshopsinwork).get();
         while (std::cin.fail() == 1)
         {
@@ -199,17 +180,17 @@ void view_all() {
         std::cout << "Вы еще не добавили КС и не можете посмотреть ее параметры. Пожалуйста настройтe КС в меню(пункт 2)" << std::endl;
     }
     else if (pipe_repair == true) {
-        std::cout << "///////////" << std::endl;
-        std::cout << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Да" << std::endl;
-        std::cout << "Компрессорная станция: " << std::endl << "Название КС: " << cs_name << "; Кол-во цехов: " << cs_workshops << "; Кол-во цехов в работе: " << cs_workshopsinwork << "; Коэффициент эффективности КС: " << cs_effectiveness << std::endl;
-        std::cout << "///////////" << std::endl;
+        std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Да" << std::endl << "Компрессорная станция: " << std::endl << "Название КС: " << cs_name << "; Кол-во цехов: " << cs_workshops << "; Кол-во цехов в работе: " << cs_workshopsinwork << "; Коэффициент эффективности КС: " << cs_effectiveness << std::endl << "///////////" << std::endl;
     }
     else {
-        std::cout << "///////////" << std::endl;
-        std::cout << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Нет" << std::endl;
-        std::cout << "Компрессорная станция: " << std::endl << "Название КС: " << cs_name << "; Кол-во цехов: " << cs_workshops << "; Кол-во цехов в работе: " << cs_workshopsinwork << "; Коэффициент эффективности КС: " << cs_effectiveness << std::endl;
-        std::cout << "///////////" << std::endl;
+        std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Нет" << std::endl << "Компрессорная станция: " << std::endl << "Название КС: " << cs_name << "; Кол-во цехов: " << cs_workshops << "; Кол-во цехов в работе: " << cs_workshopsinwork << "; Коэффициент эффективности КС: " << cs_effectiveness << std::endl << "///////////" << std::endl;
     };
+}
+void edit_pipe() {
+    return;
+}
+void edit_CS() {
+    return;
 }
 int main(){
     setlocale(LC_ALL, "RU");
