@@ -187,7 +187,112 @@ void view_all() {
     };
 }
 void edit_pipe() {
-    return;
+    int m = 0;
+    if (n != 0) {
+        while (true) {
+            std::cout << "Выберите параметр который вы хотите отредактировать: " << std::endl << "1) Название трубы" << std::endl << "2) Длина трубы" << std::endl << "3) Диаметр трубы" << std::endl << "4) Статус 'в ремонте'" << std::endl << "0) Выход в меню" << std::endl << "Номер команды: ";
+            (std::cin >> m).get();
+            while (std::cin.fail() == 1)
+            {
+                std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                std::cin.clear();
+                while (std::cin.get() != '\n');
+                std::cout << "Выберите параметр который вы хотите отредактировать: ";
+                (std::cin >> m).get();
+            }
+            while (m > 4 || m < 0) {
+                std::cout << "Ошибка. Выбрана неккоректная команда!" << std::endl << "Выберите параметр который вы хотите отредактировать: ";
+                (std::cin >> m).get();
+                while (std::cin.fail() == 1)
+                {
+                    std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                    std::cin.clear();
+                    while (std::cin.get() != '\n');
+                    std::cout << "Выберите параметр который вы хотите отредактировать: ";
+                    (std::cin >> m).get();
+                }
+            }
+            if (m == 0) {
+                break;
+            }
+            else if (m == 1) {
+                std::cout << "Старое название: " << pipe_name<<std::endl;
+                std::cout << "Введите новое название трубы: ";
+                getline(std::cin,pipe_name);
+            }
+            else if (m == 2) {
+                std::cout << "Старая длина трубы: " << pipe_length << std::endl;
+                std::cout << "Введите новую длину трубы в киллометрах: ";
+                (std::cin >> pipe_length).get();
+                while (std::cin.fail() == 1)
+                {
+                    std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                    std::cin.clear();
+                    while (std::cin.get() != '\n');
+                    std::cout << "Введите новую длину трубы в киллометрах(корректно): ";
+                    (std::cin >> pipe_length).get();
+                }
+
+            }
+            else if (m == 3) {
+                std::cout << "Старый диаметр трубы: " << pipe_diameter << std::endl;
+                std::cout << "Введите новый диаметр трубы в миллиметрах: ";
+                (std::cin >> pipe_diameter).get();
+                while (std::cin.fail() == 1)
+                {
+                    std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                    std::cin.clear();
+                    while (std::cin.get() != '\n');
+                    std::cout << "Введите новый диаметр трубы в миллиметрах (корректно): ";
+                    (std::cin >> pipe_diameter).get();
+                }
+
+            }
+            else if (m == 4) {
+                int j = -1;
+                if (pipe_repair == true) {
+                    j = 1;
+                    std::cout << "Старый статус трубы: в ремонте " << std::endl;
+                }
+                else {
+                    j = 0;
+                    std::cout << "Старый статус трубы: не в ремонте " << std::endl;
+                }
+                std::cout << "Выберите новый статус трубы: "<<std::endl<<"1)В ремонте"<<std::endl<<"2)Не в ремонте"<<std::endl<<"Введите номер команды: ";
+                (std::cin >> j).get();
+                while (std::cin.fail() == 1)
+                {
+                    std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                    std::cin.clear();
+                    while (std::cin.get() != '\n');
+                    std::cout << "Выберите новый статус трубы (корректно): ";
+                    (std::cin >> j).get();
+                }
+                while (j != 1 && j != 2) {
+                    std::cout << "Выберите новый статус трубы (корректно): " << std::endl << "1)В ремонте" << std::endl << "2)Не в ремонте" << std::endl << "Введите номер команды: ";
+                    (std::cin >> j).get();
+                    while (std::cin.fail() == 1)
+                    {
+                        std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                        std::cin.clear();
+                        while (std::cin.get() != '\n');
+                        std::cout << "Выберите новый статус трубы (корректно): " << std::endl << "1)В ремонте" << std::endl << "2)Не в ремонте" << std::endl << "Введите номер команды: ";
+                        (std::cin >> j).get();
+                    }
+                }
+                if (j == 0) {
+                    pipe_repair = true;
+            }
+                else {
+                    pipe_repair = false;
+                }
+            }
+        }
+    }
+
+    else {
+        std::cout << "Вы еще не добавили трубу и не можете посмотреть ее параметры. Пожалуйста настройтe трубу в меню(пункт 1)" << std::endl;
+    }
 }
 void edit_CS() {
     return;
@@ -210,6 +315,12 @@ int main(){
         }
         else if (k == 3) {
             view_all();
+        }
+        else if (k == 4) {
+            edit_pipe();
+        }
+        else if (k == 5) {
+            edit_CS();
         }
     }
     return 0;
