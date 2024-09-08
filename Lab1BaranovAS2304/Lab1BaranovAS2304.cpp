@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <string>
+#include <fstream>
 //Переменные
 int k = 0;
 int n = 0;
@@ -172,13 +173,13 @@ void menu_new_ks() {
     cs_effectiveness = CS.effectiveness;
 }
 void view_all() {
-    if (n == 0 && z == 0) {
+    if (pipe_diameter == 0 && cs_workshops == 0) {
         std::cout << "Вы еще не добавили ни одного объекта." << std::endl;
     }
-    else if (n == 0) {
+    else if (pipe_diameter == 0) {
         std::cout << "Вы еще не добавили трубу и не можете редактировать ее параметры. Пожалуйста настройтe трубу в меню(пункт 1)" << std::endl;
     }
-    else if (z == 0) {
+    else if (cs_workshops == 0) {
         std::cout << "Вы еще не добавили КС и не можете редактировать ее параметры. Пожалуйста настройтe КС в меню(пункт 2)" << std::endl;
     }
     else if (pipe_repair == true) {
@@ -190,7 +191,7 @@ void view_all() {
 }
 void edit_pipe() {
     int m = 0;
-    if (n != 0) {
+    if (pipe_diameter != 0) {
         while (true) {
             std::cout << "Выберите параметр который вы хотите отредактировать: " << std::endl << "1) Название трубы" << std::endl << "2) Длина трубы" << std::endl << "3) Диаметр трубы" << std::endl << "4) Статус 'в ремонте'" << std::endl << "0) Выход в меню" << std::endl << "Номер команды: ";
             (std::cin >> m).get();
@@ -298,7 +299,7 @@ void edit_pipe() {
 }
 void edit_CS() {
     int m = 0;
-    if (z != 0) {
+    if (cs_workshops != 0) {
         while (true) {
             std::cout << "Выберите параметр который вы хотите отредактировать: " << std::endl << "1) Название КС" << std::endl << "2) Кол-во цехов" << std::endl << "3) Кол-во цехов в работе" << std::endl << "4) Коэффициент эффективности (от 0 до 100)" << std::endl << "0) Выход в меню" << std::endl << "Номер команды: ";
             (std::cin >> m).get();
@@ -404,6 +405,30 @@ void edit_CS() {
         std::cout << "Вы еще не добавили КС и не можете посмотреть ее параметры. Пожалуйста настройтe КС в меню(пункт 2)" << std::endl;
     }
 }
+
+void save() {
+    std::ofstream out;
+    out.open("datapipecs.txt");
+    if (out.is_open())
+    {
+        out << pipe_name << std::endl;
+        out << cs_name << std::endl;
+        out << pipe_length << " " << pipe_diameter << " " << pipe_repair << " " << cs_workshops << " " << cs_workshopsinwork << " " << cs_effectiveness;
+    }
+    out.close();
+    std::cout << "File has been written" << std::endl;
+}
+
+void load() {
+    std::ifstream in("datapipecs.txt");
+    if (in.is_open())
+    {
+        std::getline(in, pipe_name);
+        std::getline(in, cs_name);
+        in >> pipe_length >> pipe_diameter >> pipe_repair >> cs_workshops >> cs_workshopsinwork >> cs_effectiveness;
+    }
+    in.close();
+}
 int main(){
     setlocale(LC_ALL, "RU");
     while (true) {
@@ -428,6 +453,12 @@ int main(){
         }
         else if (k == 5) {
             edit_CS();
+        }
+        else if (k == 6) {
+            save();
+        }
+        else if (k == 7) {
+            load();
         }
     }
     return 0;
