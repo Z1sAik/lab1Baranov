@@ -1,13 +1,15 @@
 ﻿#include <iostream>
 #include <string>
-//Перменные
+//Переменные
 int k = 0;
 int n = 0;
 int z = 0;
+//Переменные(трубы)
 std::string pipe_name;
 int pipe_length;
 int pipe_diameter;
 bool pipe_repair;
+//Переменные(КС)
 std::string cs_name;
 int cs_workshops;
 int cs_workshopsinwork;
@@ -30,7 +32,7 @@ struct compressor_station
 };
 //Функции
 void menu() {
-    std::cout << "Меню" << std::endl << "1) Добавить трубу" << std::endl << "2) Добавить КС" << std::endl << "3) Просмотр всех объектов" << std::endl << "4) Редактировать трубу" << std::endl << "5) Редактировать КС" << std::endl << "6) Сохранить" << std::endl << "7) Загрузить" << std::endl << "0) Выход" << std::endl << "Введите комманду которую вы бы хотели выполнить(от 0 до 9): ";
+    std::cout << "///////  Меню  ///////" << std::endl << "1) Добавить трубу" << std::endl << "2) Добавить КС" << std::endl << "3) Просмотр всех объектов" << std::endl << "4) Редактировать трубу" << std::endl << "5) Редактировать КС" << std::endl << "6) Сохранить" << std::endl << "7) Загрузить" << std::endl << "0) Выход" << std::endl << "Введите комманду которую вы бы хотели выполнить(от 0 до 9): ";
     (std::cin >> k).get();
     while (std::cin.fail() == 1)
     {
@@ -174,10 +176,10 @@ void view_all() {
         std::cout << "Вы еще не добавили ни одного объекта." << std::endl;
     }
     else if (n == 0) {
-        std::cout << "Вы еще не добавили трубу и не можете посмотреть ее параметры. Пожалуйста настройтe трубу в меню(пункт 1)" << std::endl;
+        std::cout << "Вы еще не добавили трубу и не можете редактировать ее параметры. Пожалуйста настройтe трубу в меню(пункт 1)" << std::endl;
     }
     else if (z == 0) {
-        std::cout << "Вы еще не добавили КС и не можете посмотреть ее параметры. Пожалуйста настройтe КС в меню(пункт 2)" << std::endl;
+        std::cout << "Вы еще не добавили КС и не можете редактировать ее параметры. Пожалуйста настройтe КС в меню(пункт 2)" << std::endl;
     }
     else if (pipe_repair == true) {
         std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Да" << std::endl << "Компрессорная станция: " << std::endl << "Название КС: " << cs_name << "; Кол-во цехов: " << cs_workshops << "; Кол-во цехов в работе: " << cs_workshopsinwork << "; Коэффициент эффективности КС: " << cs_effectiveness << std::endl << "///////////" << std::endl;
@@ -295,7 +297,112 @@ void edit_pipe() {
     }
 }
 void edit_CS() {
-    return;
+    int m = 0;
+    if (z != 0) {
+        while (true) {
+            std::cout << "Выберите параметр который вы хотите отредактировать: " << std::endl << "1) Название КС" << std::endl << "2) Кол-во цехов" << std::endl << "3) Кол-во цехов в работе" << std::endl << "4) Коэффициент эффективности (от 0 до 100)" << std::endl << "0) Выход в меню" << std::endl << "Номер команды: ";
+            (std::cin >> m).get();
+            while (std::cin.fail() == 1)
+            {
+                std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                std::cin.clear();
+                while (std::cin.get() != '\n');
+                std::cout << "Выберите параметр который вы хотите отредактировать: ";
+                (std::cin >> m).get();
+            }
+            while (m > 4 || m < 0) {
+                std::cout << "Ошибка. Выбрана неккоректная команда!" << std::endl << "Выберите параметр который вы хотите отредактировать: ";
+                (std::cin >> m).get();
+                while (std::cin.fail() == 1)
+                {
+                    std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                    std::cin.clear();
+                    while (std::cin.get() != '\n');
+                    std::cout << "Выберите параметр который вы хотите отредактировать: ";
+                    (std::cin >> m).get();
+                }
+            }
+            if (m == 0) {
+                break;
+            }
+            else if (m == 1) {
+                std::cout << "Старое название: " << cs_name << std::endl;
+                std::cout << "Введите новое название трубы: ";
+                getline(std::cin, cs_name);
+            }
+            else if (m == 2) {
+                std::cout << "Старое кол-во цехов: " << cs_workshops << std::endl;
+                std::cout << "Введите новое кол-во цехов: ";
+                (std::cin >> cs_workshops).get();
+                while (std::cin.fail() == 1)
+                {
+                    std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                    std::cin.clear();
+                    while (std::cin.get() != '\n');
+                    std::cout << "Введите новое кол-во цехов (корректно): ";
+                    (std::cin >> cs_workshops).get();
+                }
+
+            }
+            else if (m == 3) {
+                std::cout<< "Общее кол-во цехов: "<<cs_workshops << "; Старое кол-во цехов в работе: " << cs_workshopsinwork << std::endl;
+                std::cout << "Введите новое кол-во цехов в работе: ";
+                (std::cin >> cs_workshopsinwork).get();
+                while (std::cin.fail() == 1)
+                {
+                    std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                    std::cin.clear();
+                    while (std::cin.get() != '\n');
+                    std::cout << "Введите новое кол-во цехов в работе (корректно): ";
+                    (std::cin >> cs_workshopsinwork).get();
+                }
+                while (cs_workshopsinwork > cs_workshops) {
+                    std::cout << "Ошибка. Введено кол-во цехов в работе больше чем общее кол-во цехов." << std::endl << "Общее кол-во цехов: " << cs_workshops << std::endl;
+                    std::cout << "Введите новое кол-во цехов в работе: ";
+                    (std::cin >> cs_workshopsinwork).get();
+                    while (std::cin.fail() == 1)
+                    {
+                        std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                        std::cin.clear();
+                        while (std::cin.get() != '\n');
+                        std::cout << "Введите новое кол-во цехов в работе (корректно): ";
+                        (std::cin >> cs_workshopsinwork).get();
+                    }
+                }
+
+            }
+            else if (m == 4) {
+                std::cout << "Старый коэффициент эффективности: " << cs_effectiveness << std::endl;
+                std::cout << "Введите новый коэффициент эффективности (от 0 до 100): ";
+                (std::cin >> cs_effectiveness).get();
+                while (std::cin.fail() == 1)
+                {
+                    std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                    std::cin.clear();
+                    while (std::cin.get() != '\n');
+                    std::cout << "Введите новый коэффициент эффективности (от 0 до 100) (корректно): ";
+                    (std::cin >> cs_effectiveness).get();
+                }
+                while (cs_effectiveness < 0 || cs_effectiveness > 100) {
+                    std::cout << "Ошибка. Введён неккоректный коэффициент эффективности!" << std::endl;
+                    std::cout << "Введите новый коэффициент эффективности (от 0 до 100): ";
+                    (std::cin >> cs_effectiveness).get();
+                    while (std::cin.fail() == 1)
+                    {
+                        std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                        std::cin.clear();
+                        while (std::cin.get() != '\n');
+                        std::cout << "Введите новый коэффициент эффективности (от 0 до 100) (корректно): ";
+                        (std::cin >> cs_effectiveness).get();
+                    }
+                }
+            }
+        }
+    }
+
+    else {
+        std::cout << "Вы еще не добавили КС и не можете посмотреть ее параметры. Пожалуйста настройтe КС в меню(пункт 2)" << std::endl;
+    }
 }
 int main(){
     setlocale(LC_ALL, "RU");
