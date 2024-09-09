@@ -57,6 +57,19 @@ void menu_new_pipe() {
         std::cout << "Введите длину трубы в километрах: ";
         (std::cin >> Pipe.length).get();
     }
+    while (Pipe.length < 1) {
+        std::cout << "Ошибка. Введено отрицательное число или ноль!" << std::endl;
+        std::cout << "Введите длину трубы в километрах (корректно): ";
+        (std::cin >> Pipe.length).get();
+        while (std::cin.fail() == 1)
+        {
+            std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+            std::cin.clear();
+            while (std::cin.get() != '\n');
+            std::cout << "Введите длину трубы в километрах: ";
+            (std::cin >> Pipe.length).get();
+        }
+    }
     std::cout << "Введите диаметр трубы в миллиметрах: ";
     (std::cin >> Pipe.diameter).get();
     while (std::cin.fail() == 1)
@@ -66,6 +79,19 @@ void menu_new_pipe() {
         while (std::cin.get() != '\n');
         std::cout << "Введите диаметр трубы в миллиметрах: ";
         (std::cin >> Pipe.diameter).get();
+    }
+    while (Pipe.diameter < 1) {
+        std::cout << "Ошибка. Введено отрицательное число или ноль!" << std::endl;
+        std::cout << "Введите диаметр трубы в миллиметрах (корректно): ";
+        (std::cin >> Pipe.diameter).get();
+        while (std::cin.fail() == 1)
+        {
+            std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+            std::cin.clear();
+            while (std::cin.get() != '\n');
+            std::cout << "Введите диаметр трубы в миллиметрах: ";
+            (std::cin >> Pipe.diameter).get();
+        }
     }
     std::cout << "Выберите в каком состоянии труба: " << std::endl << "1)В ремонте" << std::endl << "2)Не в ремонте" << std::endl;
     (std::cin >> n).get();
@@ -180,10 +206,10 @@ void view_all() {
         std::cout << "///////////" << std::endl << "Труба: ещё не настроена, вы можете настроить ее в меню (пункт 1)!" << std::endl << "Компрессорная станция: " << std::endl << "Название КС: " << cs_name << "; Кол-во цехов: " << cs_workshops << "; Кол-во цехов в работе: " << cs_workshopsinwork << "; Коэффициент эффективности КС: " << cs_effectiveness << std::endl << "///////////" << std::endl;
     }
     else if (cs_workshops == 0 && pipe_diameter !=0 && pipe_repair == true) {
-        std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Да" << std::endl << "Компрессорная станция: ещё не настроена, вы можете настроить ее в меню (пункт 2)!";
+        std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Да" << std::endl << "Компрессорная станция: ещё не настроена, вы можете настроить ее в меню (пункт 2)!" << std::endl;
     }
     else if (cs_workshops == 0 && pipe_diameter != 0 && pipe_repair == false) {
-        std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Нет" << std::endl << "Компрессорная станция: ещё не настроена, вы можете настроить ее в меню (пункт 2)!";
+        std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Нет" << std::endl << "Компрессорная станция: ещё не настроена, вы можете настроить ее в меню (пункт 2)!" << std::endl;
     }
     else if (cs_workshops != 0 && pipe_diameter != 0 && pipe_repair == true) {
         std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Да" << std::endl << "Компрессорная станция: " << std::endl << "Название КС: " << cs_name << "; Кол-во цехов: " << cs_workshops << "; Кол-во цехов в работе: " << cs_workshopsinwork << "; Коэффициент эффективности КС: " << cs_effectiveness << std::endl << "///////////" << std::endl;
@@ -238,6 +264,19 @@ void edit_pipe() {
                     std::cout << "Введите новую длину трубы в киллометрах(корректно): ";
                     (std::cin >> pipe_length).get();
                 }
+                while (pipe_length < 1) {
+                    std::cout << "Ошибка. Введено отрицательное число или ноль!" << std::endl;
+                    std::cout << "Введите длину трубы в километрах (корректно): ";
+                    (std::cin >> pipe_length).get();
+                    while (std::cin.fail() == 1)
+                    {
+                        std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                        std::cin.clear();
+                        while (std::cin.get() != '\n');
+                        std::cout << "Введите длину трубы в километрах: ";
+                        (std::cin >> pipe_length).get();
+                    }
+                }
 
             }
             else if (m == 3) {
@@ -251,6 +290,19 @@ void edit_pipe() {
                     while (std::cin.get() != '\n');
                     std::cout << "Введите новый диаметр трубы в миллиметрах (корректно): ";
                     (std::cin >> pipe_diameter).get();
+                }
+                while (pipe_diameter < 1) {
+                    std::cout << "Ошибка. Введено отрицательное число или ноль!" << std::endl;
+                    std::cout << "Введите диаметр трубы в миллиметрах (корректно): ";
+                    (std::cin >> pipe_diameter).get();
+                    while (std::cin.fail() == 1)
+                    {
+                        std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                        std::cin.clear();
+                        while (std::cin.get() != '\n');
+                        std::cout << "Введите диаметр трубы в миллиметрах: ";
+                        (std::cin >> pipe_diameter).get();
+                    }
                 }
 
             }
