@@ -4,7 +4,6 @@
 //Переменные
 int k = 0;
 int n = 0;
-int z = 0;
 //Переменные(трубы)
 std::string pipe_name;
 int pipe_length;
@@ -147,7 +146,19 @@ void menu_new_ks() {
         std::cout << "Введите кол-во цехов: ";
         (std::cin >> CS.workshops).get();
     }
-    z = 1;
+    while (CS.workshops < 1) {
+        std::cout << "Ошибка кол-во цехов не может быть отрицательным или равным нулю!" << std::endl;
+        std::cout << "Введите кол-во цехов (корректно): ";
+        (std::cin >> CS.workshops).get();
+        while (std::cin.fail() == 1)
+        {
+            std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+            std::cin.clear();
+            while (std::cin.get() != '\n');
+            std::cout << "Введите кол-во цехов: ";
+            (std::cin >> CS.workshops).get();
+        }
+    }
     std::cout << "Введите кол-во цехов в работе: ";
     (std::cin >> CS.workshopsinwork).get();
     while (std::cin.fail() == 1)
@@ -158,8 +169,8 @@ void menu_new_ks() {
         std::cout << "Введите кол-во цехов в работе: ";
         (std::cin >> CS.workshopsinwork).get();
     }
-    while (CS.workshopsinwork > CS.workshops) {
-        std::cout << "Ошибка. Введено кол-во цехов в работе больше чем самих цехов!" << std::endl << "Введите кол-во цехов в работе: ";
+    while (CS.workshopsinwork > CS.workshops || CS.workshopsinwork < 0) {
+        std::cout << "Ошибка. Введено неккоректное кол-во цехов в работе!" << std::endl << "Введите кол-во цехов в работе: ";
         (std::cin >> CS.workshopsinwork).get();
         while (std::cin.fail() == 1)
         {
@@ -398,6 +409,19 @@ void edit_CS() {
                     std::cout << "Введите новое кол-во цехов (корректно): ";
                     (std::cin >> cs_workshops).get();
                 }
+                while (cs_workshops < 1) {
+                    std::cout << "Ошибка кол-во цехов не может быть отрицательным или равным нулю!" << std::endl;
+                    std::cout << "Введите кол-во цехов (корректно): ";
+                    (std::cin >> cs_workshops).get();
+                    while (std::cin.fail() == 1)
+                    {
+                        std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                        std::cin.clear();
+                        while (std::cin.get() != '\n');
+                        std::cout << "Введите кол-во цехов: ";
+                        (std::cin >> cs_workshops).get();
+                    }
+                }
                 std::cout << "Так как кол-во цехов поменялось, то обязательно нужно поменять кол-во цехов в работе. Для избежания неполадок!" << std::endl;
                 std::cout << "Общее кол-во цехов: " << cs_workshops << std::endl;
                 std::cout << "Введите новое кол-во цехов в работе: ";
@@ -410,8 +434,21 @@ void edit_CS() {
                     std::cout << "Введите новое кол-во цехов в работе (корректно): ";
                     (std::cin >> cs_workshopsinwork).get();
                 }
-                while (cs_workshopsinwork > cs_workshops) {
-                    std::cout << "Ошибка. Введено кол-во цехов в работе больше чем общее кол-во цехов." << std::endl << "Общее кол-во цехов: " << cs_workshops << std::endl;
+                while (cs_workshopsinwork < 0) {
+                    std::cout << "Ошибка кол-во цехов в работе не может быть отрицательным!" << std::endl;
+                    std::cout << "Введите кол-во цехов в работе (корректно): ";
+                    (std::cin >> cs_workshopsinwork).get();
+                    while (std::cin.fail() == 1)
+                    {
+                        std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                        std::cin.clear();
+                        while (std::cin.get() != '\n');
+                        std::cout << "Введите кол-во цехов в работе: ";
+                        (std::cin >> cs_workshopsinwork).get();
+                    }
+                }
+                while (cs_workshopsinwork > cs_workshops || cs_workshopsinwork < 0) {
+                    std::cout << "Ошибка. Введено неккоректное кол-во цехов в работе." << std::endl << "Общее кол-во цехов: " << cs_workshops << std::endl;
                     std::cout << "Введите новое кол-во цехов в работе: ";
                     (std::cin >> cs_workshopsinwork).get();
                     while (std::cin.fail() == 1)
@@ -437,8 +474,8 @@ void edit_CS() {
                     std::cout << "Введите новое кол-во цехов в работе (корректно): ";
                     (std::cin >> cs_workshopsinwork).get();
                 }
-                while (cs_workshopsinwork > cs_workshops) {
-                    std::cout << "Ошибка. Введено кол-во цехов в работе больше чем общее кол-во цехов." << std::endl << "Общее кол-во цехов: " << cs_workshops << std::endl;
+                while (cs_workshopsinwork > cs_workshops || cs_workshopsinwork < 0) {
+                    std::cout << "Ошибка. Введено неккоректное кол-во цехов в работе." << std::endl << "Общее кол-во цехов: " << cs_workshops << std::endl;
                     std::cout << "Введите новое кол-во цехов в работе: ";
                     (std::cin >> cs_workshopsinwork).get();
                     while (std::cin.fail() == 1)
