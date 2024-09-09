@@ -33,7 +33,7 @@ struct compressor_station
 };
 //Функции
 void menu() {
-    std::cout << "///////  Меню  ///////" << std::endl << "1) Добавить трубу" << std::endl << "2) Добавить КС" << std::endl << "3) Просмотр всех объектов" << std::endl << "4) Редактировать трубу" << std::endl << "5) Редактировать КС" << std::endl << "6) Сохранить" << std::endl << "7) Загрузить" << std::endl << "0) Выход" << std::endl << "Введите комманду которую вы бы хотели выполнить(от 0 до 9): ";
+    std::cout << "///////  Меню  ///////" << std::endl << "1) Добавить трубу" << std::endl << "2) Добавить КС" << std::endl << "3) Просмотр всех объектов" << std::endl << "4) Редактировать трубу" << std::endl << "5) Редактировать КС" << std::endl << "6) Сохранить" << std::endl << "7) Загрузить" << std::endl << "0) Выход" << std::endl << "Введите комманду которую вы бы хотели выполнить(от 0 до 7): ";
     (std::cin >> k).get();
     while (std::cin.fail() == 1)
     {
@@ -176,18 +176,21 @@ void view_all() {
     if (pipe_diameter == 0 && cs_workshops == 0) {
         std::cout << "Вы еще не добавили ни одного объекта." << std::endl;
     }
-    else if (pipe_diameter == 0) {
-        std::cout << "Вы еще не добавили трубу и не можете редактировать ее параметры. Пожалуйста настройтe трубу в меню(пункт 1)" << std::endl;
+    else if (pipe_diameter == 0 && cs_workshops !=0) {
+        std::cout << "///////////" << std::endl << "Труба: ещё не настроена, вы можете настроить ее в меню (пункт 1)!" << std::endl << "Компрессорная станция: " << std::endl << "Название КС: " << cs_name << "; Кол-во цехов: " << cs_workshops << "; Кол-во цехов в работе: " << cs_workshopsinwork << "; Коэффициент эффективности КС: " << cs_effectiveness << std::endl << "///////////" << std::endl;
     }
-    else if (cs_workshops == 0) {
-        std::cout << "Вы еще не добавили КС и не можете редактировать ее параметры. Пожалуйста настройтe КС в меню(пункт 2)" << std::endl;
+    else if (cs_workshops == 0 && pipe_diameter !=0 && pipe_repair == true) {
+        std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Да" << std::endl << "Компрессорная станция: ещё не настроена, вы можете настроить ее в меню (пункт 2)!";
     }
-    else if (pipe_repair == true) {
+    else if (cs_workshops == 0 && pipe_diameter != 0 && pipe_repair == false) {
+        std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Нет" << std::endl << "Компрессорная станция: ещё не настроена, вы можете настроить ее в меню (пункт 2)!";
+    }
+    else if (cs_workshops != 0 && pipe_diameter != 0 && pipe_repair == true) {
         std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Да" << std::endl << "Компрессорная станция: " << std::endl << "Название КС: " << cs_name << "; Кол-во цехов: " << cs_workshops << "; Кол-во цехов в работе: " << cs_workshopsinwork << "; Коэффициент эффективности КС: " << cs_effectiveness << std::endl << "///////////" << std::endl;
     }
     else {
         std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << pipe_name << "; Длина трубы: " << pipe_length << "; Диаметр трубы: " << pipe_diameter << "; Статус 'в ремонте': Нет" << std::endl << "Компрессорная станция: " << std::endl << "Название КС: " << cs_name << "; Кол-во цехов: " << cs_workshops << "; Кол-во цехов в работе: " << cs_workshopsinwork << "; Коэффициент эффективности КС: " << cs_effectiveness << std::endl << "///////////" << std::endl;
-    };
+    }
 }
 void edit_pipe() {
     int m = 0;
@@ -343,6 +346,31 @@ void edit_CS() {
                     std::cout << "Введите новое кол-во цехов (корректно): ";
                     (std::cin >> cs_workshops).get();
                 }
+                std::cout << "Так как кол-во цехов поменялось, то обязательно нужно поменять кол-во цехов в работе. Для избежания неполадок!" << std::endl;
+                std::cout << "Общее кол-во цехов: " << cs_workshops << std::endl;
+                std::cout << "Введите новое кол-во цехов в работе: ";
+                (std::cin >> cs_workshopsinwork).get();
+                while (std::cin.fail() == 1)
+                {
+                    std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                    std::cin.clear();
+                    while (std::cin.get() != '\n');
+                    std::cout << "Введите новое кол-во цехов в работе (корректно): ";
+                    (std::cin >> cs_workshopsinwork).get();
+                }
+                while (cs_workshopsinwork > cs_workshops) {
+                    std::cout << "Ошибка. Введено кол-во цехов в работе больше чем общее кол-во цехов." << std::endl << "Общее кол-во цехов: " << cs_workshops << std::endl;
+                    std::cout << "Введите новое кол-во цехов в работе: ";
+                    (std::cin >> cs_workshopsinwork).get();
+                    while (std::cin.fail() == 1)
+                    {
+                        std::cout << "Ошибка. Введено нецелое число или символ!" << std::endl;
+                        std::cin.clear();
+                        while (std::cin.get() != '\n');
+                        std::cout << "Введите новое кол-во цехов в работе (корректно): ";
+                        (std::cin >> cs_workshopsinwork).get();
+                    }
+                }
 
             }
             else if (m == 3) {
@@ -416,7 +444,7 @@ void save() {
         out << pipe_length << " " << pipe_diameter << " " << pipe_repair << " " << cs_workshops << " " << cs_workshopsinwork << " " << cs_effectiveness;
     }
     out.close();
-    std::cout << "File has been written" << std::endl;
+    std::cout << "Данные в файл были записаны!" << std::endl;
 }
 
 void load() {
@@ -428,12 +456,13 @@ void load() {
         in >> pipe_length >> pipe_diameter >> pipe_repair >> cs_workshops >> cs_workshopsinwork >> cs_effectiveness;
     }
     in.close();
+    std::cout << "Данные из файла загружены!" << std::endl;
 }
 int main(){
     setlocale(LC_ALL, "RU");
     while (true) {
         menu();
-        if (k > 10 || k < 0) {
+        if (k > 7 || k < 0) {
             std::cout << "ВВЕДИТЕ КОРРЕКТНУЮ КОМАНДУ!"<<std::endl;
         }
         if (k == 0) {
