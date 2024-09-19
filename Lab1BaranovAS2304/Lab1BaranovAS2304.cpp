@@ -1,10 +1,11 @@
 ﻿#include <iostream>
 #include <string>
 #include <fstream>
+using namespace std;
 //структуры
-struct Pipe_settings
+struct Pipe
 {
-    std::string Name; //название трубы
+    string Name; //название трубы
     float length; //километры 
     int diameter; //миллиметры
     bool repair; //признак "в ремонте" 
@@ -12,27 +13,58 @@ struct Pipe_settings
 
 struct compressor_station 
 {
-    std::string Name; //название КС
+    string Name; //название КС
     int workshops; //Кол-во цехов
     int workshopsinwork; //Кол-во цехов в работе
     int effectiveness; //Коэфф. эффективности
 };
 //Функции
-int check(int z, int l) {
-    (std::cin >> z).get();
+int check(int max, int low) {
+    int z;
+    cin >> z;
+    cin.ignore();
     while (true) {
-        if (std::cin.fail()) {
-            std::cout << "Ошибка. Введено не целое число или символ! Попробуйте ещё раз: ";
-            std::cin.clear();
-            while (std::cin.get() != '\n');
+        if (cin.fail()) {
+            cout << "Ошибка. Введено не целое число или символ! Попробуйте ещё раз: ";
+            cin.clear();
+            while (cin.get() != '\n');
         }
-        else if (z < l) {
-            std::cout << "Ошибка. Введено отрицательное число или ноль! Попробуйте ещё раз: ";
+        else if (z < low) {
+            cout << "Ошибка. Введено отрицательное число или ноль! Попробуйте ещё раз: ";
+        }
+        else if (max != 0 && z > max) {
+            cout << "Ошибка. Введено число больше максимального! Попробуйте ещё раз: ";
         }
         else {
             break;
         }
-        (std::cin >> z).get();
+        cin >> z;
+        cin.ignore();
+    }
+    return z;
+}
+
+float floatcheck(int max, int low) {
+    float z;
+    cin >> z;
+    cin.ignore();
+    while (true) {
+        if (cin.fail()) {
+            cout << "Ошибка. Введено не целое число или символ! Попробуйте ещё раз: ";
+            cin.clear();
+            while (cin.get() != '\n');
+        }
+        else if (z < low) {
+            cout << "Ошибка. Введено отрицательное число или ноль! Попробуйте ещё раз: ";
+        }
+        else if (max != 0 && z > max) {
+            cout << "Ошибка. Введено число больше максимального! Попробуйте ещё раз: ";
+        }
+        else {
+            break;
+        }
+        cin >> z;
+        cin.ignore();
     }
     return z;
 }
@@ -40,254 +72,213 @@ int check(int z, int l) {
 int menu() {
     int k = -1;
     while (true) {
-        std::cout << "///////  Меню  ///////" << std::endl
-            << "1) Добавить трубу" << std::endl
-            << "2) Добавить КС" << std::endl
-            << "3) Просмотр всех объектов" << std::endl
-            << "4) Редактировать трубу" << std::endl
-            << "5) Редактировать КС" << std::endl
-            << "6) Сохранить настройки трубы" << std::endl
-            << "7) Загрузить настройки трубы" << std::endl
-            << "8) Сохранить настройки КС" << std::endl
-            << "9) Загрузить настройки КС" << std::endl
-            << "0) Выход" << std::endl
-            << "Введите команду которую вы бы хотели выполнить(от 0 до 7): ";
-        k = check(k, 0);
-        if (k < 9 || k > 0) {
-            return k;
-        }
-        if (k == 0) {
-            break;
-        }
+        cout << "///////  Меню  ///////" << endl
+            << "1) Добавить трубу" << endl
+            << "2) Добавить КС" << endl
+            << "3) Просмотр всех объектов" << endl
+            << "4) Редактировать трубу" << endl
+            << "5) Редактировать КС" << endl
+            << "6) Сохранить настройки трубы" << endl
+            << "7) Загрузить настройки трубы" << endl
+            << "8) Сохранить настройки КС" << endl
+            << "9) Загрузить настройки КС" << endl
+            << "0) Выход" << endl
+            << "Введите команду которую вы бы хотели выполнить(от 0 до 9): ";
+        k = check(9, 0);
+        return k;
     }
 }
 
-Pipe_settings menu_new_pipe() {
-    Pipe_settings Pipe;
-    std::cout << "Введите название трубы (на английском язык): ";
-    getline(std::cin, Pipe.Name);
-    std::cout << "Введите длину трубы в километрах: ";
-    std::cin >> Pipe.length;
-    while (true) {
-        if (std::cin.fail()) {
-            std::cout << "Ошибка. Введено не число! Попробуйте ещё раз: ";
-            std::cin.clear();
-            while (std::cin.get() != '\n');
-        }
-        else if (Pipe.length < 0.001) {
-            std::cout << "Ошибка. Введено отрицательное число или ноль! Попробуйте ещё раз: ";
-        }
-        else {
-            break;
-        }
-
-        std::cin >> Pipe.length;
-    }
-    std::cout << "Введите диаметр трубы в миллиметрах: ";
-    Pipe.diameter = check(Pipe.diameter, 1);
-    std::cout << "Выберите в каком состоянии труба: " << std::endl << "0)Не в ремонте" << std::endl << "1)В ремонте" << std::endl;
+void menu_new_pipe(Pipe &Pipe) {
+    cout << "Введите название трубы (на английском язык): ";
+    getline(cin, Pipe.Name);
+    cout << "Введите длину трубы в километрах: ";
+    Pipe.length = floatcheck(0, 0);
+    cout << "Введите диаметр трубы в миллиметрах: ";
+    Pipe.diameter = check(0, 1);
+    cout << "Выберите в каком состоянии труба: " << endl << "0)Не в ремонте" << endl << "1)В ремонте" << endl;
     int k=-1;
-    k = check(k, 0);
-    while (k != 1 && k != 0) {
-        std::cout << "Ошибка. Выбрана невреная команда!" << std::endl << "Выберите в каком состоянии труба: " << std::endl << "0)Не в ремонте" << std::endl << "1)В ремонте" << std::endl;
-        k = check(k, 0);
-    }
+    k = check(1, 0);
     Pipe.repair = k;
-    std::cout << "Труба создана: " << std::endl << "Название трубы: " << Pipe.Name << "; Длина трубы: " << Pipe.length << "; Диаметр трубы: " << Pipe.diameter << "; Статус 'в ремонте': " << std::boolalpha << Pipe.repair << std::endl;
-    return Pipe;
+    cout << "Труба создана: " << endl << "Название трубы: " << Pipe.Name << "; Длина трубы: " << Pipe.length << "; Диаметр трубы: " << Pipe.diameter << "; Статус 'в ремонте': " << boolalpha << Pipe.repair << endl;
 }
-compressor_station menu_new_ks() {
-    compressor_station CS;
-    std::cout << "Введите название компрессорной станции (на английском язык): ";
-    getline(std::cin, CS.Name);
-    std::cout << "Введите кол-во цехов: ";
-    CS.workshops = check(CS.workshops,1);
-    std::cout << "Введите кол-во цехов в работе: ";
-    CS.workshopsinwork = check(CS.workshopsinwork,0);
-    while (CS.workshopsinwork > CS.workshops || CS.workshopsinwork < 0) {
-        std::cout << "Ошибка. Введено неккоректное кол-во цехов в работе!" << std::endl << "Введите кол-во цехов в работе: ";
-        CS.workshopsinwork = check(CS.workshopsinwork,0);
-    }
-    std::cout << "Введите коэффициент эффективности КС(от 0 до 100): ";
-    CS.effectiveness = check(CS.effectiveness, 0);
-    while (CS.effectiveness < 0 || CS.effectiveness > 100) {
-        std::cout << "Введите коэффициент от 0 до 100!: ";
-        CS.effectiveness = check(CS.effectiveness, 0);
-    }
-    std::cout << "Компрессорная станция создана: " << std::endl << "Название КС: " << CS.Name << "; Кол-во цехов: " << CS.workshops << "; Кол-во цехов в работе: " << CS.workshopsinwork << "; Коэффициент эффективности КС: " << CS.effectiveness << std::endl;
-    return CS;
+void menu_new_ks(compressor_station &CS) {
+    cout << "Введите название компрессорной станции (на английском язык): ";
+    getline(cin, CS.Name);
+    cout << "Введите кол-во цехов: ";
+    CS.workshops = check(0,1);
+    cout << "Введите кол-во цехов в работе: ";
+    CS.workshopsinwork = check(CS.workshops,0);
+    cout << "Введите коэффициент эффективности КС(от 0 до 100): ";
+    CS.effectiveness = check(100, 0);
+    cout << "Компрессорная станция создана: " << endl << "Название КС: " << CS.Name << "; Кол-во цехов: " << CS.workshops << "; Кол-во цехов в работе: " << CS.workshopsinwork << "; Коэффициент эффективности КС: " << CS.effectiveness << endl;
 }
-void view_all(Pipe_settings Pipe,compressor_station CS) {
-    if (Pipe.diameter < 1 && CS.workshops < 1) {
-        std::cout << "Вы еще не добавили ни одного объекта." << std::endl;
-    }
-    else if (Pipe.diameter < 1 && CS.workshops > 0) {
-        std::cout << "///////////" << std::endl << "Труба: ещё не настроена, вы можете настроить ее в меню (пункт 1)!" << std::endl << "Компрессорная станция: " << std::endl << "Название КС: " << CS.Name << "; Кол-во цехов: " << CS.workshops << "; Кол-во цехов в работе: " << CS.workshopsinwork << "; Коэффициент эффективности КС: " << CS.effectiveness << std::endl << "///////////" << std::endl;
-    }
-    else if (CS.workshops < 1 && Pipe.diameter > 0) {
-        std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << Pipe.Name << "; Длина трубы: " << Pipe.length << "; Диаметр трубы: " << Pipe.diameter << "; Статус 'в ремонте': " << std::boolalpha << Pipe.repair << std::endl << "Компрессорная станция: ещё не настроена, вы можете настроить ее в меню (пункт 2)!" << std::endl;
-    }
-    else {
-        std::cout << "///////////" << std::endl << "Труба: " << std::endl << "Название трубы: " << Pipe.Name << "; Длина трубы: " << Pipe.length << "; Диаметр трубы: " << Pipe.diameter << "; Статус 'в ремонте': " << std::boolalpha << Pipe.repair << std::endl << "Компрессорная станция: " << std::endl << "Название КС: " << CS.Name << "; Кол-во цехов: " << CS.workshops << "; Кол-во цехов в работе: " << CS.workshopsinwork << "; Коэффициент эффективности КС: " << CS.effectiveness << std::endl << "///////////" << std::endl;
+void view_all(Pipe &Pipe,compressor_station &CS) {
+    int m = 0;
+    while (true) {
+        cout << "Выберите что вы хотите просмотреть: " << endl << "1) Просмотреть трубу" << endl << "2) Просмотреть КС" << endl << "3) Просмотреть все объекты"<<endl<<"0) Выход в меню" << endl << "Введите комманду: ";
+        m = check(3, 0);
+        if (m == 0) {
+            break;
+        }
+        else if (m == 1) {
+            if (Pipe.diameter < 1) {
+                cout << "Вы еще не добавили трубу." << endl;
+            }
+            else {
+                cout << "Труба: " << endl << "Название трубы: " << Pipe.Name << "; Длина трубы: " << Pipe.length << "; Диаметр трубы: " << Pipe.diameter << "; Статус 'в ремонте': " << boolalpha << Pipe.repair << endl;
+            }
+        }
+        else if (m == 2) {
+            if (CS.workshops < 1) {
+                cout << "Вы еще не добавили КС." << endl;
+            }
+            else {
+                cout << "Компрессорная станция: " << endl << "Название КС: " << CS.Name << "; Кол-во цехов: " << CS.workshops << "; Кол-во цехов в работе: " << CS.workshopsinwork << "; Коэффициент эффективности КС: " << CS.effectiveness << endl;
+            }
+        }
+        else if (m == 3) {
+            if (Pipe.diameter < 1 && CS.workshops < 1) {
+                cout << "Вы еще не добавили ни одного объекта." << endl;
+            }
+            else if (Pipe.diameter > 0 && CS.workshops < 1) {
+                cout << "Вы еще не добавили КС." << endl;
+            }
+            else if (Pipe.diameter < 1 && CS.workshops > 0) {
+                cout << "Вы еще не добавили трубу." << endl;
+            }
+            else {
+                cout << "Труба: " << endl << "Название трубы: " << Pipe.Name << "; Длина трубы: " << Pipe.length << "; Диаметр трубы: " << Pipe.diameter << "; Статус 'в ремонте': " << boolalpha << Pipe.repair << endl << "Компрессорная станция: " << endl << "Название КС: " << CS.Name << "; Кол-во цехов: " << CS.workshops << "; Кол-во цехов в работе: " << CS.workshopsinwork << "; Коэффициент эффективности КС: " << CS.effectiveness << endl;
+            }
+        }
     }
 }
-Pipe_settings edit_pipe(Pipe_settings Pipe) {
+void edit_pipe(Pipe &Pipe) {
     int m = 0;
     if (Pipe.diameter >0) {
         while (true) {
-            std::cout << "Выберите параметр который вы хотите отредактировать: " << std::endl << "1) Название трубы" << std::endl << "2) Статус 'в ремонте'" << std::endl << "0) Выход в меню" << std::endl << "Номер команды: ";
-            m = check(m, 0);
-            while (m > 2 || m < 0) {
-                std::cout << "Ошибка. Выбрана неккоректная команда!" << std::endl << "Выберите параметр который вы хотите отредактировать: ";
-                m = check(m, 0);
-            }
+            cout << "Выберите параметр который вы хотите отредактировать: " << endl << "1) Название трубы" << endl << "2) Статус 'в ремонте'" << endl << "0) Выход в меню" << endl << "Номер команды: ";
+            m = check(2, 0);
             if (m == 0) {
                 break;
             }
             else if (m == 1) {
-                std::cout << "Старое название: " << Pipe.Name <<std::endl;
-                std::cout << "Введите новое название трубы: ";
-                getline(std::cin,Pipe.Name);
+                cout << "Старое название: " << Pipe.Name <<endl;
+                cout << "Введите новое название трубы: ";
+                getline(cin,Pipe.Name);
             }
             else if (m == 2) {
-
-                std::cout << "Старый статус трубы: в ремонте " << std::boolalpha << Pipe.repair << std::endl;
-
-                std::cout << "Выберите новый статус трубы: "<<std::endl<<"0)Не в ремонте"<<std::endl<<"1)В ремонте"<<std::endl<<"Введите номер команды: ";
-                (std::cin >> Pipe.repair).get();
-                std::cout << "Выберите в каком состоянии труба: " << std::endl << "0)Не в ремонте" << std::endl << "1)В ремонте" << std::endl;
+                cout << "Старый статус трубы: в ремонте " << boolalpha << Pipe.repair << endl;
+                cout << "Выберите новый статус трубы: "<<endl<<"0)Не в ремонте"<<endl<<"1)В ремонте"<<endl<<"Введите номер команды: ";
                 int k = -1;
-                k = check(k, 0);
-                while (k != 1 && k != 0) {
-                    std::cout << "Ошибка. Выбрана невреная команда!" << std::endl << "Выберите в каком состоянии труба: " << std::endl << "0)Не в ремонте" << std::endl << "1)В ремонте" << std::endl;
-                    k = check(k, 0);
-                }
+                k = check(1, 0);
                 Pipe.repair = k;
             }
         }
     }
-
     else {
-        std::cout << "Вы еще не добавили трубу и не можете посмотреть ее параметры. Пожалуйста настройтe трубу в меню(пункт 1)" << std::endl;
+        cout << "Вы еще не добавили трубу и не можете посмотреть ее параметры. Пожалуйста настройтe трубу в меню(пункт 1)" << endl;
     }
-    return Pipe;
 }
-compressor_station edit_CS(compressor_station CS) {
+void edit_CS(compressor_station &CS) {
     int m = 0;
     if (CS.workshops > 0) {
         while (true) {
-            std::cout << "Выберите параметр который вы хотите отредактировать: " << std::endl << "1) Название КС" << std::endl << "2) Кол-во цехов в работе" << std::endl << "3) Коэффициент эффективности (от 0 до 100)" << std::endl << "0) Выход в меню" << std::endl << "Номер команды: ";
-            m = check(m, 0);
-            while (m > 3 || m < 0) {
-                m = check(m, 0);
-            }
+            cout << "Выберите параметр который вы хотите отредактировать: " << endl << "1) Название КС" << endl << "2) Кол-во цехов в работе" << endl << "3) Коэффициент эффективности (от 0 до 100)" << endl << "0) Выход в меню" << endl << "Номер команды: ";
+            m = check(3, 0);
             if (m == 0) {
                 break;
             }
             else if (m == 1) {
-                std::cout << "Старое название: " << CS.Name << std::endl;
-                std::cout << "Введите новое название трубы: ";
-                getline(std::cin, CS.Name);
+                cout << "Старое название: " << CS.Name << endl;
+                cout << "Введите новое название трубы: ";
+                getline(cin, CS.Name);
             }
             else if (m == 2) {
-                std::cout<< "Общее кол-во цехов: "<<CS.workshops << "; Старое кол-во цехов в работе: " << CS.workshopsinwork << std::endl;
-                std::cout << "Введите новое кол-во цехов в работе: ";
-                CS.workshopsinwork = check(CS.workshopsinwork, 1);
-                while (CS.workshopsinwork > CS.workshops || CS.workshopsinwork < 0) {
-                    std::cout << "Ошибка. Введено неккоректное кол-во цехов в работе!" << std::endl << "Введите кол-во цехов в работе: ";
-                    CS.workshopsinwork = check(CS.workshopsinwork, 1);
-                }
-
+                cout<< "Общее кол-во цехов: "<<CS.workshops << "; Старое кол-во цехов в работе: " << CS.workshopsinwork << endl;
+                cout << "Введите новое кол-во цехов в работе: ";
+                CS.workshopsinwork = check(CS.workshops, 0);
             }
             else if (m == 3) {
-                std::cout << "Старый коэффициент эффективности: " << CS.effectiveness << std::endl;
-                std::cout << "Введите новый коэффициент эффективности (от 0 до 100): ";
-                CS.effectiveness = check(CS.effectiveness, 0);
-                while (CS.effectiveness < 0 || CS.effectiveness > 100) {
-                    std::cout << "Введите коэффициент от 0 до 100!: ";
-                    CS.effectiveness = check(CS.effectiveness, 0);
-                }
+                cout << "Старый коэффициент эффективности: " << CS.effectiveness << endl;
+                cout << "Введите новый коэффициент эффективности (от 0 до 100): ";
+                CS.effectiveness = check(100, 0);
             }
         }
     }
-
     else {
-        std::cout << "Вы еще не добавили КС и не можете посмотреть ее параметры. Пожалуйста настройтe КС в меню(пункт 2)" << std::endl;
+        cout << "Вы еще не добавили КС и не можете посмотреть ее параметры. Пожалуйста настройтe КС в меню(пункт 2)" << endl;
     }
-    return CS;
 }
 
-void savePipe(Pipe_settings Pipe) {
-    std::ofstream out;
-    out.open("datapipe.txt");
+void savePipe(Pipe &Pipe) {
+    ofstream out;
+    out.open("datapipecs.txt");
     if (out.is_open())
     {
-        out << Pipe.Name << std::endl;
+        out << Pipe.Name << endl;
         out << Pipe.length << " " << Pipe.diameter << " " << Pipe.repair;
     }
     out.close();
-    std::cout << "Данные о трубе сохранены в файл!" << std::endl;
+    cout << "Данные о трубе сохранены в файл!" << endl;
 }
-void saveCS(compressor_station CS) {
-    std::ofstream out;
-    out.open("dataCS.txt");
+void saveCS(compressor_station &CS) {
+    ofstream out;
+    out.open("datapipecs.txt");
     if (out.is_open())
     {
-        out << CS.Name << std::endl;
+        out << CS.Name << endl;
         out << CS.workshops << " " << CS.workshopsinwork << " " << CS.effectiveness;
     }
     out.close();
-    std::cout << "Данные о КС сохранены в файл!" << std::endl;
+    cout << "Данные о КС сохранены в файл!" << endl;
 }
 
-Pipe_settings loadPipe(Pipe_settings Pipe) {
-    std::ifstream in("datapipe.txt");
+Pipe loadPipe(Pipe Pipe) {
+    ifstream in("datapipe.txt");
     if (in.is_open())
     {
-        std::getline(in, Pipe.Name);
+        getline(in, Pipe.Name);
         in >> Pipe.length >> Pipe.diameter >> Pipe.repair;
     }
     in.close();
-    std::cout << "Данные о трубе загружены из файла!" << std::endl;
+    cout << "Данные о трубе загружены из файла!" << endl;
     return Pipe;
 }
 compressor_station loadCS(compressor_station CS) {
-    std::ifstream in("datapipe.txt");
+    ifstream in("datapipe.txt");
     if (in.is_open())
     {
-        std::getline(in, CS.Name);
+        getline(in, CS.Name);
         in >> CS.workshops >> CS.workshopsinwork >> CS.effectiveness;
     }
     in.close();
-    std::cout << "Данные о КС загружены из файла!" << std::endl;
+    cout << "Данные о КС загружены из файла!" << endl;
     return CS;
 }
 int main(){
     setlocale(LC_ALL, "RU");
-    Pipe_settings Pipe;
+    Pipe Pipe;
     compressor_station CS;
     while (true) {
         int k = menu();
-        if (k > 9 || k < 0) {
-            std::cout << "ВВЕДИТЕ КОРРЕКТНУЮ КОМАНДУ!"<<std::endl;
-        }
         if (k == 0) {
             break;
         }
         else if (k == 1) {
-            Pipe = menu_new_pipe();
+            menu_new_pipe(Pipe);
         }
         else if (k == 2) {
-            CS = menu_new_ks();
+            menu_new_ks(CS);
         }
         else if (k == 3) {
             view_all(Pipe,CS);
         }
         else if (k == 4) {
-            Pipe = edit_pipe(Pipe);
+            edit_pipe(Pipe);
         }
         else if (k == 5) {
-            CS = edit_CS(CS);
+            edit_CS(CS);
         }
         else if (k == 6) {
             savePipe(Pipe);
