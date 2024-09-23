@@ -1,7 +1,9 @@
 ﻿#include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
 using namespace std;
+
 //структуры
 struct Pipe
 {
@@ -18,6 +20,7 @@ struct compressor_station
     int workshopsinwork; //Кол-во цехов в работе
     int effectiveness; //Коэфф. эффективности
 };
+
 //Функции
 int check(int max, int low) {
     int z;
@@ -44,7 +47,7 @@ int check(int max, int low) {
     return z;
 }
 
-float floatcheck(int max, int low) {
+float floatcheck(int max, float low) {
     float z;
     cin >> z;
     cin.ignore();
@@ -89,19 +92,20 @@ int menu() {
     }
 }
 
-void menu_new_pipe(Pipe &Pipe) {
+void menu_new_Pipe(Pipe &P) {
     cout << "Введите название трубы (на английском язык): ";
-    getline(cin, Pipe.Name);
+    getline(cin, P.Name);
     cout << "Введите длину трубы в километрах: ";
-    Pipe.length = floatcheck(0, 0);
+    P.length = floatcheck(0, 0.1);
     cout << "Введите диаметр трубы в миллиметрах: ";
-    Pipe.diameter = check(0, 1);
+    P.diameter = check(0, 1);
     cout << "Выберите в каком состоянии труба: " << endl << "0)Не в ремонте" << endl << "1)В ремонте" << endl;
     int k=-1;
     k = check(1, 0);
-    Pipe.repair = k;
-    cout << "Труба создана: " << endl << "Название трубы: " << Pipe.Name << "; Длина трубы: " << Pipe.length << "; Диаметр трубы: " << Pipe.diameter << "; Статус 'в ремонте': " << boolalpha << Pipe.repair << endl;
+    P.repair = k;
+    cout << "Труба создана: " << endl << "Название трубы: " << P.Name << "; Длина трубы: " << P.length << "; Диаметр трубы: " << P.diameter << "; Статус 'в ремонте': " << boolalpha << P.repair << endl;
 }
+
 void menu_new_ks(compressor_station &CS) {
     cout << "Введите название компрессорной станции (на английском язык): ";
     getline(cin, CS.Name);
@@ -113,7 +117,15 @@ void menu_new_ks(compressor_station &CS) {
     CS.effectiveness = check(100, 0);
     cout << "Компрессорная станция создана: " << endl << "Название КС: " << CS.Name << "; Кол-во цехов: " << CS.workshops << "; Кол-во цехов в работе: " << CS.workshopsinwork << "; Коэффициент эффективности КС: " << CS.effectiveness << endl;
 }
-void view_all(Pipe &Pipe,compressor_station &CS) {
+
+void show_Pipe(Pipe &P) {
+    cout << "Труба: " << endl << "Название трубы: " << P.Name << "; Длина трубы: " << P.length << "; Диаметр трубы: " << P.diameter << "; Статус 'в ремонте': " << boolalpha << P.repair << endl;
+}
+void show_cs(compressor_station &CS) {
+    cout << "Компрессорная станция: " << endl << "Название КС: " << CS.Name << "; Кол-во цехов: " << CS.workshops << "; Кол-во цехов в работе: " << CS.workshopsinwork << "; Коэффициент эффективности КС: " << CS.effectiveness << endl;
+}
+
+void view_all(Pipe &P,compressor_station &CS) {
     int m = 0;
     while (true) {
         cout << "Выберите что вы хотите просмотреть: " << endl << "1) Просмотреть трубу" << endl << "2) Просмотреть КС" << endl << "3) Просмотреть все объекты"<<endl<<"0) Выход в меню" << endl << "Введите комманду: ";
@@ -122,11 +134,11 @@ void view_all(Pipe &Pipe,compressor_station &CS) {
             break;
         }
         else if (m == 1) {
-            if (Pipe.diameter < 1) {
+            if (P.diameter < 1) {
                 cout << "Вы еще не добавили трубу." << endl;
             }
             else {
-                cout << "Труба: " << endl << "Название трубы: " << Pipe.Name << "; Длина трубы: " << Pipe.length << "; Диаметр трубы: " << Pipe.diameter << "; Статус 'в ремонте': " << boolalpha << Pipe.repair << endl;
+                show_Pipe(P);
             }
         }
         else if (m == 2) {
@@ -134,28 +146,30 @@ void view_all(Pipe &Pipe,compressor_station &CS) {
                 cout << "Вы еще не добавили КС." << endl;
             }
             else {
-                cout << "Компрессорная станция: " << endl << "Название КС: " << CS.Name << "; Кол-во цехов: " << CS.workshops << "; Кол-во цехов в работе: " << CS.workshopsinwork << "; Коэффициент эффективности КС: " << CS.effectiveness << endl;
+                show_cs(CS);
             }
         }
         else if (m == 3) {
-            if (Pipe.diameter < 1 && CS.workshops < 1) {
+            if (P.diameter < 1 && CS.workshops < 1) {
                 cout << "Вы еще не добавили ни одного объекта." << endl;
             }
-            else if (Pipe.diameter > 0 && CS.workshops < 1) {
+            else if (P.diameter > 0 && CS.workshops < 1) {
                 cout << "Вы еще не добавили КС." << endl;
             }
-            else if (Pipe.diameter < 1 && CS.workshops > 0) {
+            else if (P.diameter < 1 && CS.workshops > 0) {
                 cout << "Вы еще не добавили трубу." << endl;
             }
             else {
-                cout << "Труба: " << endl << "Название трубы: " << Pipe.Name << "; Длина трубы: " << Pipe.length << "; Диаметр трубы: " << Pipe.diameter << "; Статус 'в ремонте': " << boolalpha << Pipe.repair << endl << "Компрессорная станция: " << endl << "Название КС: " << CS.Name << "; Кол-во цехов: " << CS.workshops << "; Кол-во цехов в работе: " << CS.workshopsinwork << "; Коэффициент эффективности КС: " << CS.effectiveness << endl;
+                show_Pipe(P);
+                show_cs(CS);
             }
         }
     }
 }
-void edit_pipe(Pipe &Pipe) {
+
+void edit_Pipe(Pipe &P) {
     int m = 0;
-    if (Pipe.diameter >0) {
+    if (P.diameter >0) {
         while (true) {
             cout << "Выберите параметр который вы хотите отредактировать: " << endl << "1) Название трубы" << endl << "2) Статус 'в ремонте'" << endl << "0) Выход в меню" << endl << "Номер команды: ";
             m = check(2, 0);
@@ -163,16 +177,16 @@ void edit_pipe(Pipe &Pipe) {
                 break;
             }
             else if (m == 1) {
-                cout << "Старое название: " << Pipe.Name <<endl;
+                cout << "Старое название: " << P.Name <<endl;
                 cout << "Введите новое название трубы: ";
-                getline(cin,Pipe.Name);
+                getline(cin,P.Name);
             }
             else if (m == 2) {
-                cout << "Старый статус трубы: в ремонте " << boolalpha << Pipe.repair << endl;
+                cout << "Старый статус трубы: в ремонте " << boolalpha << P.repair << endl;
                 cout << "Выберите новый статус трубы: "<<endl<<"0)Не в ремонте"<<endl<<"1)В ремонте"<<endl<<"Введите номер команды: ";
                 int k = -1;
                 k = check(1, 0);
-                Pipe.repair = k;
+                P.repair = k;
             }
         }
     }
@@ -180,6 +194,7 @@ void edit_pipe(Pipe &Pipe) {
         cout << "Вы еще не добавили трубу и не можете посмотреть ее параметры. Пожалуйста настройтe трубу в меню(пункт 1)" << endl;
     }
 }
+
 void edit_CS(compressor_station &CS) {
     int m = 0;
     if (CS.workshops > 0) {
@@ -211,86 +226,121 @@ void edit_CS(compressor_station &CS) {
     }
 }
 
-void savePipe(Pipe &Pipe) {
+void save(Pipe& P, Pipe& P_save, compressor_station& CS, compressor_station& CS_save, int k) {
+    ifstream in("datapipecs.txt");
+    if (in.is_open())
+    {
+        getline(in, P_save.Name);
+        in >> P_save.length >> P_save.diameter >> P_save.repair;
+        in.ignore();
+        getline(in, CS_save.Name);
+        in >> CS_save.workshops >> CS_save.workshopsinwork >> CS_save.effectiveness;
+        in.ignore();
+    }
+    in.close();
+    if (k == 6 && P.Name.empty()) {
+        cout << "У вас нет данных о трубе для записи." << endl;
+        return;
+    }
+    if (k == 8 && CS.Name.empty()) {
+        cout << "У вас нет данных о КС для записи." << endl;
+        return;
+    }
+
     ofstream out;
     out.open("datapipecs.txt");
     if (out.is_open())
     {
-        out << Pipe.Name << endl;
-        out << Pipe.length << " " << Pipe.diameter << " " << Pipe.repair;
+        if (k == 6) {
+            out << P.Name << endl;
+            out << P.length << " " << P.diameter << " " << P.repair << endl;
+            out << CS_save.Name << endl;
+            out << CS_save.workshops << " " << CS_save.workshopsinwork << " " << CS_save.effectiveness;
+            cout << "Данные о трубе записаны!" << endl;
+        }
+        if (k == 8) {
+
+            out << P_save.Name << endl;
+            out << P_save.length << " " << P_save.diameter << " " << P_save.repair << endl;
+            out << CS.Name << endl;
+            out << CS.workshops << " " << CS.workshopsinwork << " " << CS.effectiveness;
+            cout << "Данные о КС записаны!" << endl;
+        }
     }
     out.close();
-    cout << "Данные о трубе сохранены в файл!" << endl;
-}
-void saveCS(compressor_station &CS) {
-    ofstream out;
-    out.open("datapipecs.txt");
-    if (out.is_open())
-    {
-        out << CS.Name << endl;
-        out << CS.workshops << " " << CS.workshopsinwork << " " << CS.effectiveness;
-    }
-    out.close();
-    cout << "Данные о КС сохранены в файл!" << endl;
 }
 
-Pipe loadPipe(Pipe Pipe) {
-    ifstream in("datapipe.txt");
+void load(Pipe &P,Pipe &P_save,compressor_station &CS,compressor_station &CS_save, int k) {
+    ifstream in("datapipecs.txt");
     if (in.is_open())
     {
-        getline(in, Pipe.Name);
-        in >> Pipe.length >> Pipe.diameter >> Pipe.repair;
+        getline(in, P_save.Name);
+        in >> P_save.length >> P_save.diameter >> P_save.repair;
+        in.ignore();
+        getline(in, CS_save.Name);
+        in >> CS_save.workshops >> CS_save.workshopsinwork >> CS_save.effectiveness;
+        in.ignore();
     }
     in.close();
-    cout << "Данные о трубе загружены из файла!" << endl;
-    return Pipe;
-}
-compressor_station loadCS(compressor_station CS) {
-    ifstream in("datapipe.txt");
-    if (in.is_open())
-    {
-        getline(in, CS.Name);
-        in >> CS.workshops >> CS.workshopsinwork >> CS.effectiveness;
+    if (k == 7) {
+        if (P_save.Name.empty()) {
+            cout << "В файле нет данных о трубе!" << endl;
+            return;
+        }
+        else{
+            P = P_save;
+            cout << "Настройки трубы были загружены из файла!" << endl;
+        } 
     }
-    in.close();
-    cout << "Данные о КС загружены из файла!" << endl;
-    return CS;
+    if (k == 9) {
+        if (CS_save.Name.empty()) {
+            cout << "В файле нет данных о КС!" << endl;
+            return;
+        }
+        else {
+            CS = CS_save;
+            cout << "Настройки КС были загружены из файла!" << endl;
+        }
+    }
 }
+
 int main(){
     setlocale(LC_ALL, "RU");
-    Pipe Pipe;
+    Pipe P;
     compressor_station CS;
+    Pipe P_save{ "",0,0,0 };
+    compressor_station CS_save{ "",0,0,0 };
     while (true) {
         int k = menu();
         if (k == 0) {
             break;
         }
         else if (k == 1) {
-            menu_new_pipe(Pipe);
+            menu_new_Pipe(P);
         }
         else if (k == 2) {
             menu_new_ks(CS);
         }
         else if (k == 3) {
-            view_all(Pipe,CS);
+            view_all(P,CS);
         }
         else if (k == 4) {
-            edit_pipe(Pipe);
+            edit_Pipe(P);
         }
         else if (k == 5) {
             edit_CS(CS);
         }
         else if (k == 6) {
-            savePipe(Pipe);
+            save(P, P_save, CS, CS_save, 6);
         }
         else if (k == 7) {
-            Pipe = loadPipe(Pipe);
+            load(P,P_save,CS,CS_save,7);
         }
         else if (k == 8) {
-            saveCS(CS);
+            save(P, P_save, CS, CS_save, 8);
         }
         else if (k == 9) {
-            CS = loadCS(CS);
+            load(P, P_save, CS, CS_save, 9);
         }
     }
     return 0;
