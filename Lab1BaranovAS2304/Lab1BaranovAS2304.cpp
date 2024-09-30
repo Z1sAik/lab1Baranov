@@ -144,7 +144,7 @@ void edit_Pipe(Pipe& P) {
     if (P.diameter > 0) {
         while (true) {
             cout << "Выберите параметр который вы хотите отредактировать: " << endl << "1) Статус 'в ремонте'" << endl << "0) Выход в меню" << endl << "Номер команды: ";
-            m = check(2, 0);
+            m = check(1, 0);
             if (m == 0) {
                 break;
             }
@@ -165,7 +165,7 @@ void edit_CS(compressor_station& CS) {
     if (CS.workshops > 0) {
         while (true) {
             cout << "Выберите параметр который вы хотите отредактировать: " << endl << "1) Кол-во цехов в работе" << endl << "0) Выход в меню" << endl << "Номер команды: ";
-            m = check(3, 0);
+            m = check(1, 0);
             if (m == 0) {
                 break;
             }
