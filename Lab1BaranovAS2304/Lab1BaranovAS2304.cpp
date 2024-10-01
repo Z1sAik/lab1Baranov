@@ -191,7 +191,21 @@ void SaveCS(const compressor_station& CS, ofstream& out)
 {
     out << "data CS:" << endl;
     out << CS.Name << endl;
-    out << CS.workshops << " " << CS.workshopsinwork << " " << CS.effectiveness;
+    out << CS.workshops << " " << CS.workshopsinwork << " " << CS.effectiveness << endl;;
+}
+
+void loadPipe(Pipe& P, ifstream& in)
+{
+    if (in.is_open()) {
+        getline(in >> ws, P.Name);
+        in >> P.length >> P.diameter >> P.repair;
+    }
+}
+void loadCS(compressor_station& CS, ifstream& in) {
+    if (in.is_open()) {
+        getline(in >> ws, CS.Name);
+        in >> CS.workshops >> CS.workshopsinwork >> CS.effectiveness;
+    }
 }
 void save(const Pipe& P,const compressor_station& CS) {
     ofstream out;
@@ -200,17 +214,13 @@ void save(const Pipe& P,const compressor_station& CS) {
     {
         if (P.Name.empty() && CS.Name.empty()) {
             cout << "У вас нет данных для записи!" << endl;
+            return;
         }
-        else if (!P.Name.empty() && !CS.Name.empty()) {
-            SavePipe(P, out);
-            SaveCS(CS, out);
-            cout << "Данные о КС и трубе записаны!" << endl;
-        }
-        else if (!P.Name.empty() && CS.Name.empty()) {
+        if (!P.Name.empty() && CS.Name.empty()) {
             SavePipe(P, out);
             cout << "Данные о трубе записаны!" << endl;
         }
-        else if (!CS.Name.empty() && P.Name.empty()) {
+        if (!CS.Name.empty() && P.Name.empty()) {
             SaveCS(CS, out);
             cout << "Данные о КС записаны!" << endl;
         }
@@ -221,31 +231,26 @@ void save(const Pipe& P,const compressor_station& CS) {
 
 void load(Pipe& P, compressor_station& CS) {
     ifstream in("datapipecs.txt");
-    if (in.is_open()) {
-        string finde;
-        while (getline(in, finde)) {
-            if (finde == "data Pipe:") {
-                getline(in, P.Name);
-                in >> P.length >> P.diameter >> P.repair;
-                in.ignore();
-                cout << "Данные из файла о трубе записаны" << endl;
-            }
-            if (finde == "data CS:") {
-                getline(in, CS.Name);
-                in >> CS.workshops >> CS.workshopsinwork >> CS.effectiveness;
-                in.ignore();
-                cout << "Данные из файла о КС записаны" << endl;
-            }
+    if (!in.is_open())
+    {
+        cout << "not found" << endl;
+        return;
+    }
+    P = {};
+    CS = {};
+    string finde;
+    while (getline(in >> ws, finde)) {
+        if (finde == "data Pipe:") {
+            loadPipe(P, in);
+            cout << "Данные из файла о трубе записаны" << endl;
         }
-        if (P.Name.empty()) {
-            cout << "Нет данных о трубе" << endl;
-        }
-        if (CS.Name.empty()) {
-            cout << "Нет данных о КС" << endl;
+        if (finde == "data CS:") {
+            loadCS(CS, in);
+            cout << "Данные из файла о КС записаны" << endl;
         }
     }
-    in.close();
 }
+    
 
 int main() {
     setlocale(LC_ALL, "RU");
